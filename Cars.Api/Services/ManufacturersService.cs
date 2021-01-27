@@ -16,29 +16,26 @@ namespace Cars.Api.Services
 
     public class ManufacturersService : IManufacturersService
     {
-        readonly DatabaseContext db;
+        private readonly DatabaseContext _db;
 
-        public ManufacturersService(DatabaseContext db)
-        {
-            this.db = db;
-        }
+        public ManufacturersService(DatabaseContext db) => _db = db;
 
         public async Task<IEnumerable<Manufacturer>> GetAll() =>
-            await this.db.Manufacturers
+            await _db.Manufacturers
                 .OrderBy(m => m.Name)
                 .Include(m => m.Cars)
                 .ToListAsync();
 
         public async Task<Manufacturer> GetById(int id) =>
-            await this.db.Manufacturers
+            await _db.Manufacturers
                 .Where(m => m.Id == id)
                 .Include(m => m.Cars)
                 .FirstOrDefaultAsync();
 
         public async Task<int> Save(Manufacturer manufacturer)
         {
-            await this.db.Manufacturers.AddAsync(manufacturer);
-            return await this.db.SaveChangesAsync();
+            await _db.Manufacturers.AddAsync(manufacturer);
+            return await _db.SaveChangesAsync();
         }
     }
 }

@@ -10,22 +10,22 @@ namespace Cars.Api.Controllers
     [Route("[controller]")]
     public class ManufacturersController : ControllerBase
     {
-        readonly ILogger<ManufacturersController> logger;
-        readonly IManufacturersService service;
+        private readonly ILogger<ManufacturersController> _logger;
+        private readonly IManufacturersService _service;
 
         public ManufacturersController(ILogger<ManufacturersController> logger, IManufacturersService service)
         {
-            this.logger = logger;
-            this.service = service;
+            _logger = logger;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => Ok(await this.service.GetAll());
+        public async Task<IActionResult> Index() => Ok(await _service.GetAll());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var manufacturer = await this.service.GetById(id);
+            var manufacturer = await _service.GetById(id);
 
             if (manufacturer == null)
                 return NotFound();
@@ -36,7 +36,7 @@ namespace Cars.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Manufacturer manufacturer)
         {
-            await this.service.Save(manufacturer);
+            await _service.Save(manufacturer);
             
             return CreatedAtAction(nameof(Post), manufacturer);
         }
